@@ -1,0 +1,36 @@
+import os
+import re
+
+new_top_bar = """    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-bar-left">
+                <a href="mailto:info@ronoutsourcing.com" style="display:inline-flex; align-items:center; gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> info@ronoutsourcing.com</a>
+                <a href="tel:+256754000000" style="display:inline-flex; align-items:center; gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> +256 754 000 000</a>
+            </div>
+            <div class="top-bar-right">
+                <a href="#" aria-label="LinkedIn" style="display:inline-flex; align-items:center; gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg> LinkedIn</a>
+                <a href="#" aria-label="Twitter" style="display:inline-flex; align-items:center; gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg> Twitter</a>
+            </div>
+        </div>
+    </div>"""
+
+def update_topbar():
+    html_files = [f for f in os.listdir('.') if f.endswith('.html')]
+    for file in html_files:
+        with open(file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Regex to match the exact top-bar block
+        pattern = re.compile(r'    <!-- Top Bar -->\s+<div class="top-bar">.*?</div>\s+</div>', re.DOTALL)
+        
+        if pattern.search(content):
+            new_content = pattern.sub(new_top_bar, content)
+            with open(file, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            print(f"Updated {file}")
+        else:
+            print(f"No match found in {file}")
+
+if __name__ == "__main__":
+    update_topbar()
